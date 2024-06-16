@@ -1,0 +1,3 @@
+[submodule "include/pcl"]
+	path = include/pcl
+	url = git@github.com:PointCloudLibrary/pcl.git
