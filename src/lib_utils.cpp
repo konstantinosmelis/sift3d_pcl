@@ -5,7 +5,7 @@ pcl::PointCloud<pcl::PointXYZ>
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     /* Populate the point cloud */
-    for (int i = 0; i < dimensions[0], i++)
+    for (int i = 0; i < dimensions[0]; i++)
     {
         pcl::PointXYZ point;
         point.x = array[i * dimensions[0] + 0];
