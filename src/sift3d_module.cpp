@@ -1,7 +1,7 @@
 #include "sift3d.hpp"
 
 static PyMethodDef sift3d_methods[] = {
-    {"get_dims", print_array, METH_VARARGS, "Print the array"},
+    {"get_dims", get_dimensions, METH_VARARGS, "Print the array"},
     {nullptr, nullptr, 0, nullptr}     /* Sentinel */
 };
 
@@ -21,5 +21,10 @@ PyInit_sift3d(void)
 {
     PyObject *m;
     m = PyModule_Create(&sift3d_module);
+    assert (!PyErr_Occurred());
+    import_array(); /* Initialize NumPy C API first */
+    if (PyErr_Occurred())
+        return nullptr;
+    assert (PyArray_API);
     return m;
 }

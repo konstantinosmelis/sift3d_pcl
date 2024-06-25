@@ -31,8 +31,7 @@ endif()
 
 add_library(sift3d SHARED
     src/sift3d_module.cpp
-    src/sift3d.cpp
-    src/lib_utils.cpp
+    # src/lib_utils.cpp
 )
 
 target_include_directories(sift3d PRIVATE
