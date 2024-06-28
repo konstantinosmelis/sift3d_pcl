@@ -44,7 +44,7 @@ pcl::PointCloud<pcl::PointNormal>::Ptr
 }
 
 pcl::PointCloud<pcl::PointWithScale>::Ptr
-*detect_keypoints(pcl::PointCloud<pcl::PointXYZ>::Ptr *point_cloud)
+*detect_sift_keypoints(pcl::PointCloud<pcl::PointXYZ>::Ptr *point_cloud)
 {
     pcl::SIFTKeypoint<pcl::PointXYZ, pcl::PointWithScale> sift;
     pcl::search::KdTree<pcl::PointXYZ>::Ptr
@@ -62,7 +62,19 @@ pcl::PointCloud<pcl::PointWithScale>::Ptr
 }
 
 pcl::PointCloud<pcl::PointWithScale>::Ptr
-*detect_keypoints(pcl::PointCloud<pcl::PointNormal>::Ptr *point_cloud)
+*detect_sift_keypoints(pcl::PointCloud<pcl::PointNormal>::Ptr *point_cloud)
 {
+    pcl::SIFTKeypoint<pcl::PointNormal, pcl::PointWithScale> sift;
+    pcl::search::KdTree<pcl::PointNormal>::Ptr
+                        tree_sift(new pcl::search::KdTree<pcl::PointNormal>);
+    pcl::PointCloud<pcl::PointWithScale>::Ptr
+                        keypoints(new pcl::PointCloud<pcl::PointWithScale>);
+    /* Detect the keypoints */
+    sift.setInputCloud(point_cloud);
+    sift.setSearchMethod(tree_sift);
+    sift.setScales(.5f, 8, 5);
+    sift.setMinimumContrast(min_contrast);
+    sift.compute(*keypoints);
 
+    return keypoints;
 }

@@ -5,13 +5,13 @@
 #include <pcl/point_types.h>
 #include <pcl/keypoints/sift_keypoint.h>
 
-pcl::PointCloud<pcl::PointXYZ> *build_point_cloud(double *array,
-                                                  npy_intp *dimensions);
+pcl::PointCloud<pcl::PointXYZ>::Ptr *build_point_cloud(double *array,
+                                                       npy_intp *dimensions);
 
-pcl::PointCloud<pcl::PointNormal> *build_point_cloud(double *array,
-                                                     double *normals,
-                                                     npy_intp *dimensions);
+pcl::PointCloud<pcl::PointNormal>::Ptr *build_point_cloud(double *array,
+                                                          double *normals,
+                                                          npy_intp *dimensions);
 
-pcl::PointCloud<pcl::PointWithScale> *detect_keypoints(pcl::PointCloud<pcl::PointXYZ> *point_cloud);
+pcl::PointCloud<pcl::PointWithScale>::Ptr *detect_sift_keypoints(pcl::PointCloud<pcl::PointXYZ>::Ptr *point_cloud);
 
-pcl::PointCloud<pcl::PointWithScale> *detect_keypoints(pcl::PointCloud<pcl::PointNormal> *point_cloud);
+pcl::PointCloud<pcl::PointWithScale>::Ptr *detect_sift_keypoints(pcl::PointCloud<pcl::PointNormal>::Ptr *point_cloud);

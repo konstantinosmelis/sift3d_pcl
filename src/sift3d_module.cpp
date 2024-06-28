@@ -8,8 +8,8 @@ static PyMethodDef sift3d_methods[] = {
 static struct PyModuleDef sift3d_module = {
     PyModuleDef_HEAD_INIT,
     "sift3d",                          /* name of module */
-    "Simple module implementing the \
-            sift keypoints by PCL",    /* module documentation */
+    "Simple module implementing the
+    sift keypoints detection by PCL",  /* module documentation */
     -1,                                /* size of per-interpreter state of the
                                        module, or -1 if the module keeps state
                                        in global variables. */
