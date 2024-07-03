@@ -14,8 +14,23 @@ extern "C" {
 #endif
 
 // Function declaration
-static PyObject
-*get_dimensions(PyObject *self, PyObject *args)
+PyObject *
+build_list(double *array, npy_intp *dimensions)
+{
+    PyObject *py_array = PyList_New(dimensions[0]);
+    for (int i = 0; i < dimensions[0]; i++)
+    {
+        PyObject *value = Py_BuildValue("[iii]",
+                                        data[i * 3 + 0],
+                                        data[i * 3 + 1],
+                                        data[i * 3 + 2]);
+        PyList_SetItem(py_array, i, value);
+    }
+    return py_array;
+}
+
+static PyObject *
+get_dimensions(PyObject *self, PyObject *args)
 {
     PyObject *py_array = nullptr;
     PyArrayObject *numpy_array = nullptr;
@@ -41,6 +56,45 @@ static PyObject
     }
 
     printf("(%d, %d)\n", dims[0], dims[1]);
+
+    Py_RETURN_NONE;
+}
+
+static PyObject *
+sift_keypoints(PyObject *self, PyObject *args)
+{
+    PyObject *py_array_vertices = nullptr;
+    PyObject *py_array_normals = nullptr;
+    PyArrayObject *numpy_array_vertices = nullptr;
+    PyArrayObject *numpy_array_normals = nullptr;
+
+    if (!PyArg_ParseTuple(args, "OO", &py_array_vertices,
+                                      &py_array_normals))
+    {
+        return nullptr;
+    }
+
+    /* Convert the data into a numpy array */
+    numpy_array_vertices = (PyArrayObject *)
+                            PyArray_FROM_OTF(py_array_vertices,
+                                             NPY_DOUBLE,
+                                             NPY_ARRAY_IN_ARRAY);
+
+    numpy_array_normals = (PyArrayObject *)
+                            PyArray_FROM_OTF(py_array_normals,
+                                             NPY_DOUBLE,
+                                             NPY_ARRAY_IN_ARRAY);
+
+    /* Get the dimensions of the array */
+    npy_intp *dims_vertices = PyArray_DIMS(numpy_array_vertices);
+    npy_intp *dims_normals = PyArray_DIMS(numpy_array_normals);
+    static_assert (dims_vertices[0] == dims_normals[0],
+                   "The number of vertices and normals \
+                    should be the same");
+    
+    /* Get a pointer to the array data */
+    auto *data_vertices = (double *) PyArray_DATA(numpy_array_vertices);
+    auto *data_normals = (double *) PyArray_DATA(numpy_array_normals);
 
     Py_RETURN_NONE;
 }
